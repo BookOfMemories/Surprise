@@ -214,8 +214,9 @@ input[type=range] { -webkit-appearance: none; appearance: none; }
 
 #cover-front {
   position: relative;
-  width: clamp(320px, 52vw, 680px);
-  aspect-ratio: 1.55 / 1;
+  /* width is responsive to BOTH width and height so it never crops vertically */
+  width: min(85vw, 420px, calc(85vh / 1.35));
+  aspect-ratio: 1 / 1.35;
   border-radius: 3px 12px 12px 3px;
   /* Leather texture */
   background:
@@ -519,15 +520,18 @@ input[type=range] { -webkit-appearance: none; appearance: none; }
 
 #music-controls:hover { opacity: 1; }
 
-#music-toggle {
+#music-toggle,
+#fullscreen-toggle {
   font-size: 1rem;
   line-height: 1;
   padding: 2px;
   opacity: 0.8;
   transition: opacity 0.2s, transform 0.2s;
+  color: var(--gold-bright);
 }
 
-#music-toggle:hover { opacity: 1; transform: scale(1.15); }
+#music-toggle:hover,
+#fullscreen-toggle:hover { opacity: 1; transform: scale(1.15); }
 
 #volume-slider {
   width: 70px;

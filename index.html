@@ -22,8 +22,7 @@
     body { background: #0d0807; }
     #book-scene,
     #cover-screen,
-    #wb-overlay,
-    #letter-modal { display: none; }
+    #wb-overlay { display: none; }
     #loading-screen { display: flex; }
   </style>
 </head>
@@ -35,7 +34,7 @@
   <section id="loading-screen" role="status" aria-live="polite" aria-label="Loading memories">
     <div class="loading-inner">
       <div class="loading-ornament" aria-hidden="true">❧</div>
-      <h1 class="loading-title">Preparing Our Memories…</h1>
+      <h1 class="loading-title">Preparing Your Memories…</h1>
       <div class="loading-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <div id="loading-bar-fill"></div>
       </div>
@@ -249,7 +248,8 @@
   <!-- ============================================================
        MUSIC CONTROLS (always visible)
        ============================================================ -->
-  <div id="music-controls" aria-label="Music controls" role="group">
+  <div id="music-controls" aria-label="Controls" role="group">
+    <button id="fullscreen-toggle" aria-label="Toggle Fullscreen" title="Fullscreen">⛶</button>
     <button id="music-toggle" aria-label="Toggle music mute" title="Mute">🎵</button>
     <input
       type="range"

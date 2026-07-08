@@ -468,9 +468,10 @@ const App = (() => {
     _on('tap-zone-left',  'click', goBackward);
     _on('tap-zone-right', 'click', goForward);
 
-    /* Music */
+    /* Music & Fullscreen */
     _on('music-toggle',  'click', () => Music.toggleMute());
     _on('volume-slider', 'input', e  => Music.setVolume(e.target.value / 100));
+    _on('fullscreen-toggle', 'click', _toggleFullscreen);
 
     /* Rotation overlay */
     _on('rot-continue', 'click', () => {
@@ -495,6 +496,18 @@ const App = (() => {
   function _on(id, ev, fn) {
     const el = document.getElementById(id);
     if (el) el.addEventListener(ev, fn);
+  }
+
+  /* ── Fullscreen ── */
+  function _toggleFullscreen() {
+    const doc = document.documentElement;
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (doc.requestFullscreen) doc.requestFullscreen();
+      else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
   }
 
   /* ── Touch: swipe + pinch + double-tap ── */
