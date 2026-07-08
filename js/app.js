@@ -379,6 +379,7 @@ const App = (() => {
     modal.classList.remove('modal-active');
     setTimeout(() => {
       document.getElementById('letter-iframe').src = '';
+      if (pageIdx === ENDING) _scheduleAutoClose();
     }, 450);
   }
 
