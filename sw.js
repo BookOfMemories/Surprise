@@ -3,7 +3,7 @@
    Cache-first strategy for all static assets.
    ================================================================ */
 
-const CACHE_NAME  = 'book-of-memories-v1';
+const CACHE_NAME  = 'book-of-memories-v2';
 
 /* All files to pre-cache on install */
 const PRECACHE = [
