@@ -1,0 +1,473 @@
+/* =============================================================
+   book.css — Open book structure, pages, text page typography,
+               chapter image display, page slots
+   ============================================================= */
+
+/* ============================================================
+   BOOK WRAPPER & FRAME
+   ============================================================ */
+#book-wrapper {
+  /* Responsive book size — landscape 3:2 ratio, capped by vh */
+  --bw: min(92vw, calc(85vh * 1.5));
+  width: var(--bw);
+  height: calc(var(--bw) / 1.5);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  filter: drop-shadow(var(--shadow-book));
+  will-change: transform, opacity;
+}
+
+/* ── Top leather binding strip ── */
+.book-binding-top {
+  height: clamp(10px, 1.8vh, 18px);
+  border-radius: 4px 4px 0 0;
+  flex-shrink: 0;
+  background:
+    linear-gradient(to bottom,
+      var(--leather-dark) 0%,
+      var(--leather-mid)  60%,
+      #3a1a08 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,200,100,0.08),
+    0 2px 6px rgba(0,0,0,0.4);
+  position: relative;
+  z-index: 3;
+}
+
+/* Subtle rivets on top strip */
+.book-binding-top::before,
+.book-binding-top::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #d4a870, #8b5a20);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.book-binding-top::before { left:  22px; }
+.book-binding-top::after  { right: 22px; }
+
+/* ── Bottom leather binding strip ── */
+.book-binding-bottom {
+  height: clamp(10px, 1.8vh, 18px);
+  border-radius: 0 0 4px 4px;
+  flex-shrink: 0;
+  background:
+    linear-gradient(to top,
+      var(--leather-dark) 0%,
+      var(--leather-mid)  60%,
+      #3a1a08 100%);
+  box-shadow:
+    inset 0 -1px 0 rgba(255,200,100,0.06),
+    0 -2px 6px rgba(0,0,0,0.35);
+  position: relative;
+  z-index: 3;
+}
+
+/* ── Open book area (between bindings) ── */
+#book-open {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Page-edge stack (left side) ── */
+.book-edge-left {
+  width: clamp(8px, 1.5vw, 14px);
+  flex-shrink: 0;
+  background: repeating-linear-gradient(
+    to right,
+    #c8b890 0, #c8b890 0.8px,
+    #e8d8a8 0.8px, #e8d8a8 1.8px,
+    #d4c098 1.8px, #d4c098 2.2px
+  );
+  box-shadow:
+    inset -3px 0 6px rgba(0,0,0,0.2),
+    -2px 0 8px rgba(0,0,0,0.3);
+}
+
+/* ── Page-edge stack (right side) ── */
+.book-edge-right {
+  width: clamp(8px, 1.5vw, 14px);
+  flex-shrink: 0;
+  background: repeating-linear-gradient(
+    to left,
+    #c8b890 0, #c8b890 0.8px,
+    #e8d8a8 0.8px, #e8d8a8 1.8px,
+    #d4c098 1.8px, #d4c098 2.2px
+  );
+  box-shadow:
+    inset 3px 0 6px rgba(0,0,0,0.2),
+    2px 0 8px rgba(0,0,0,0.3);
+}
+
+/* #pages-container is defined further below — absolute fill */
+
+/* ============================================================
+   LEFT DECORATIVE PAGE (shown for text pages)
+   ============================================================ */
+#book-left-page {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(to right, var(--parchment-2) 0%, var(--parchment) 100%);
+  /* Shown only in text mode */
+  width: 0;
+  overflow: hidden;
+  transition: width 0.35s ease, opacity 0.35s ease;
+  opacity: 0;
+  flex-shrink: 0;
+}
+
+#book-open[data-mode="text"] #book-left-page {
+  width: 38%;
+  opacity: 1;
+}
+
+.left-page-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: clamp(1rem, 3vw, 2rem);
+  text-align: center;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.2s;
+}
+
+#book-open[data-mode="text"] .left-page-inner { opacity: 1; }
+
+.left-deco-rule {
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, var(--gold-dim), transparent);
+  opacity: 0.4;
+}
+
+.left-deco-ornament {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  color: var(--gold-dim);
+  opacity: 0.35;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.left-deco-text {
+  font-family: var(--font-display);
+  font-size: clamp(0.6rem, 1.2vw, 0.78rem);
+  font-style: italic;
+  color: var(--gold-dim);
+  letter-spacing: 0.15em;
+  opacity: 0.45;
+  text-align: center;
+  line-height: 1.7;
+}
+
+/* ── Center gutter shadow (visible in text mode) ── */
+#book-gutter {
+  position: relative;
+  z-index: 5;
+  width: 0;
+  flex-shrink: 0;
+  overflow: visible;
+  transition: width 0.35s ease;
+}
+
+#book-open[data-mode="text"] #book-gutter { width: 2px; }
+
+#book-gutter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 26px;
+  height: 100%;
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(0,0,0,0.06) 35%,
+    rgba(0,0,0,0.14) 50%,
+    rgba(0,0,0,0.06) 65%,
+    transparent 100%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   RIGHT / MAIN CONTENT AREA
+   ============================================================ */
+#book-right-area {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  /* Paper background for the pages area */
+  background: var(--parchment);
+}
+
+/* Paper texture via CSS */
+#book-right-area::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ============================================================
+   PAGES CONTAINER — fills #book-right-area absolutely
+   (Cannot use flex:1 here because #book-right-area is not
+    a flex container; absolute fill is the correct approach)
+   ============================================================ */
+#pages-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ============================================================
+   PAGE SLOTS
+   ============================================================ */
+.page-slot {
+  position: absolute;
+  inset: 0;
+  display: none;           /* hidden by default */
+  z-index: 0;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.page-slot.slot-active {
+  display: flex;
+}
+
+/* ============================================================
+   CHAPTER IMAGE SLOTS (full-spread display)
+   ============================================================ */
+#slot-ch-a,
+#slot-ch-b {
+  align-items: center;
+  justify-content: center;
+  background: var(--parchment-2);  /* shows if image doesn't fill exactly */
+  padding: 0;
+}
+
+.chapter-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;    /* NEVER crop or stretch */
+  object-position: center;
+  display: block;
+  will-change: transform;
+  transform-origin: center center;
+  transition: none;        /* zoom managed by JS directly */
+}
+
+/* In chapter mode, left area provides background for full image */
+#book-open[data-mode="chapter"] #book-left-page {
+  background: var(--parchment-2);
+}
+
+/* ============================================================
+   TEXT PAGE SLOTS (intro, beyond, ending)
+   ============================================================ */
+#slot-intro,
+#slot-beyond,
+#slot-ending {
+  align-items: center;
+  justify-content: center;
+  /* right-page parchment */
+  background:
+    linear-gradient(to left, var(--cream) 0%, var(--parchment) 100%);
+}
+
+.text-page-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4%, 2.5rem) clamp(1.5rem, 5%, 3.5rem);
+  text-align: center;
+  overflow-y: auto;
+  /* subtle left shadow from the spine */
+  box-shadow: inset 6px 0 20px rgba(0,0,0,0.04);
+}
+
+/* Page title */
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.7rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-mid);
+  line-height: 1.35;
+  margin-bottom: var(--space-sm);
+  animation: textPageIn 0.5s ease 0.1s both;
+}
+
+/* Ornamental divider */
+.page-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  width: 70%;
+  margin: var(--space-sm) auto var(--space-md);
+  animation: textPageIn 0.5s ease 0.15s both;
+}
+
+.page-rule::before,
+.page-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, var(--gold-dim), transparent);
+  opacity: 0.5;
+}
+
+.page-rule-gem {
+  font-size: 0.55rem;
+  color: var(--gold-dim);
+  opacity: 0.6;
+}
+
+/* Body text */
+.page-body {
+  animation: textPageIn 0.5s ease 0.2s both;
+}
+
+.page-body p {
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 1.8vw, 1.05rem);
+  color: var(--ink-mid);
+  line-height: 1.85;
+  margin-bottom: 0.6em;
+}
+
+.page-body p.heart-line {
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  margin-top: 0.4em;
+  color: var(--heart-red);
+}
+
+.page-body p.italic-line {
+  font-style: italic;
+  color: var(--ink-light);
+}
+
+/* ── Begin Reading button (intro page) ── */
+#begin-reading-btn {
+  margin-top: var(--space-md);
+  font-family: var(--font-display);
+  font-size: clamp(0.75rem, 1.6vw, 0.92rem);
+  font-style: italic;
+  color: var(--ink-light);
+  border: 1px solid rgba(60,30,10,0.28);
+  border-radius: 30px;
+  padding: 0.6em 1.6em;
+  transition: all 0.25s;
+  animation: textPageIn 0.5s ease 0.3s both;
+}
+
+#begin-reading-btn:hover {
+  background: var(--ink-mid);
+  color: var(--parchment);
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(60,20,5,0.25);
+}
+
+/* ── Ending page specifics ── */
+.ending-footer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(60,30,10,0.12);
+  width: 80%;
+  animation: textPageIn 0.5s ease 0.35s both;
+}
+
+.ending-footer p {
+  font-family: var(--font-display);
+  font-size: clamp(0.65rem, 1.4vw, 0.8rem);
+  color: var(--ink-light);
+  font-style: italic;
+  line-height: 1.8;
+  opacity: 0.7;
+}
+
+.ending-footer .footer-heart {
+  font-size: 1rem;
+  margin-top: 0.3em;
+  opacity: 1;
+}
+
+/* ── Secret heart ── */
+#secret-heart {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 13px;
+  color: rgba(180, 70, 60, 0.12);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color 0.4s ease;
+  z-index: 20;
+  padding: 6px;  /* larger tap area */
+}
+
+#secret-heart:hover {
+  color: rgba(180, 70, 60, 0.3);
+}
+
+/* ============================================================
+   CHAPTER MODE — page backgrounds
+   When mode="chapter", both left area and right area show the
+   same parchment tone so the image container feels unified.
+   ============================================================ */
+#book-open[data-mode="chapter"] #book-right-area {
+  background: var(--parchment-2);
+}
+
+/* Subtle center spine line in chapter mode */
+#book-open[data-mode="chapter"]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom,
+    transparent 3%,
+    rgba(0,0,0,0.08) 20%,
+    rgba(0,0,0,0.12) 50%,
+    rgba(0,0,0,0.08) 80%,
+    transparent 97%);
+  z-index: 6;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+/* ============================================================
+   GLOW HEART (reused from style.css, positioned here)
+   ============================================================ */
+#glow-heart {
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  text-shadow:
+    0 0 30px rgba(220, 100, 80, 0.9),
+    0 0 80px rgba(220, 100, 80, 0.5),
+    0 0 160px rgba(220, 100, 80, 0.2);
+}

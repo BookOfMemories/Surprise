@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#1a0805">
+  <meta name="description" content="Our Little Book of Memories — Volume I, July 2025–July 2026. A handcrafted digital scrapbook.">
+
+  <!-- Prevent search engine indexing (this is a private gift) -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Our Little Book of Memories · Volume I</title>
+
+  <!-- CSS (order matters) -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/book.css">
+  <link rel="stylesheet" href="css/mobile.css">
+
+  <!-- Inline critical style — prevents flash of unstyled content -->
+  <style>
+    body { background: #0d0807; }
+    #book-scene,
+    #cover-screen,
+    #wb-overlay,
+    #letter-modal { display: none; }
+    #loading-screen { display: flex; }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       LOADING SCREEN
+       ============================================================ -->
+  <section id="loading-screen" role="status" aria-live="polite" aria-label="Loading memories">
+    <div class="loading-inner">
+      <div class="loading-ornament" aria-hidden="true">❧</div>
+      <h1 class="loading-title">Preparing Your Memories…</h1>
+      <div class="loading-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="loading-bar-fill"></div>
+      </div>
+      <div id="loading-percent" aria-hidden="true">0%</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COVER SCREEN — CSS leather book on a wooden table
+       ============================================================ -->
+  <section id="cover-screen" aria-label="Scrapbook cover">
+
+    <!-- Floating dust particles (JS-populated) -->
+    <div id="dust-container" aria-hidden="true"></div>
+
+    <!-- The CSS book -->
+    <div id="cover-book" aria-hidden="true">
+
+      <!-- Spine (left edge, visible due to slight perspective) -->
+      <div id="cover-spine"></div>
+
+      <!-- Front cover -->
+      <div id="cover-front">
+        <!-- Corner ornament helper -->
+        <div id="cover-corners"></div>
+
+        <!-- Page-edge stacks -->
+        <div id="cover-pages"></div>
+        <div id="cover-bottom-pages"></div>
+
+        <!-- Bookmark ribbon -->
+        <div id="cover-bookmark"></div>
+
+        <!-- Inner content -->
+        <div id="cover-content">
+          <div class="cover-top-ornament" aria-hidden="true">✦ &ensp; ✦ &ensp; ✦</div>
+
+          <h1 id="cover-title">
+            Our Little Book<br>of Memories
+          </h1>
+
+          <div class="cover-rule" aria-hidden="true"></div>
+
+          <p class="cover-volume">Volume I</p>
+          <p class="cover-date">July 2025 – July 2026</p>
+
+          <div class="cover-quote">
+            <p>"Every page tells a memory.<br>Every memory tells our story."</p>
+          </div>
+
+          <button id="open-story-btn" aria-label="Open the scrapbook">
+            ❤️&ensp;Open Our Story&ensp;❤️
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       BOOK SCENE — the open scrapbook
+       ============================================================ -->
+  <section id="book-scene" aria-label="Open scrapbook">
+
+    <div id="book-wrapper">
+
+      <!-- Top leather binding -->
+      <div class="book-binding-top" aria-hidden="true"></div>
+
+      <!-- Open book area -->
+      <div id="book-open" data-mode="text">
+
+        <!-- Left page-edge stack -->
+        <div class="book-edge-left" aria-hidden="true"></div>
+
+        <!-- Decorative left page (shown for text pages) -->
+        <div id="book-left-page" aria-hidden="true">
+          <div class="left-page-inner">
+            <div class="left-deco-ornament">❦</div>
+            <div class="left-deco-rule"></div>
+            <div class="left-deco-text">
+              Our Little<br>Book of<br>Memories
+            </div>
+            <div class="left-deco-rule"></div>
+            <div class="left-deco-ornament" style="font-size:1rem; opacity:0.3;">❤</div>
+          </div>
+        </div>
+
+        <!-- Center gutter shadow -->
+        <div id="book-gutter" aria-hidden="true"></div>
+
+        <!-- Main content area: all page slots live here -->
+        <div id="book-right-area">
+          <div id="pages-container">
+
+            <!-- INTRO PAGE -->
+            <div id="slot-intro" class="page-slot" role="article" aria-label="Introduction">
+              <div class="text-page-inner">
+                <h2 class="page-title">Before We Begin…</h2>
+                <div class="page-rule" aria-hidden="true">
+                  <span class="page-rule-gem">✦</span>
+                </div>
+                <div class="page-body">
+                  <p>A small collection of memories from one unforgettable year.</p>
+                  <p>These pages don't tell our entire story.</p>
+                  <p>They simply hold some of the moments that made this year so special.</p>
+                  <p>And today, on our second wedding anniversary…</p>
+                  <p>I wanted to give them a place they'll always belong.</p>
+                  <p class="heart-line">❤️</p>
+                </div>
+                <button id="begin-reading-btn" aria-label="Begin reading the scrapbook">
+                  Begin Reading
+                </button>
+              </div>
+            </div>
+
+            <!-- CHAPTER SLOT A (alternates with B for smooth transitions) -->
+            <div id="slot-ch-a" class="page-slot" role="img" aria-label="Chapter page">
+              <img class="chapter-img" src="" alt="Chapter memory page" draggable="false">
+            </div>
+
+            <!-- CHAPTER SLOT B -->
+            <div id="slot-ch-b" class="page-slot" role="img" aria-label="Chapter page">
+              <img class="chapter-img" src="" alt="Chapter memory page" draggable="false">
+            </div>
+
+            <!-- BEYOND THESE PAGES -->
+            <div id="slot-beyond" class="page-slot" role="article" aria-label="Beyond these pages">
+              <div class="text-page-inner">
+                <h2 class="page-title">Beyond These Pages</h2>
+                <div class="page-rule" aria-hidden="true">
+                  <span class="page-rule-gem">✦</span>
+                </div>
+                <div class="page-body">
+                  <p>This scrapbook holds only a glimpse of the year we've shared.</p>
+                  <p>It doesn't capture the late-night talks…</p>
+                  <p>the random tea breaks…</p>
+                  <p>the silly arguments that ended in laughter…</p>
+                  <p>the quiet drives…</p>
+                  <p>the ordinary evenings that slowly became our favorite memories.</p>
+                  <p>Some moments were never photographed.</p>
+                  <p>Some were too beautiful to interrupt with a camera.</p>
+                  <p>But every single one still lives in my heart.</p>
+                  <p class="heart-line">❤️</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ENDING PAGE -->
+            <div id="slot-ending" class="page-slot" role="article" aria-label="Anniversary message">
+              <div class="text-page-inner">
+                <h2 class="page-title">Happy 2nd Wedding Anniversary&ensp;❤️</h2>
+                <div class="page-rule" aria-hidden="true">
+                  <span class="page-rule-gem">✦</span>
+                </div>
+                <div class="page-body ending-body">
+                  <p>This scrapbook doesn't hold every memory we've made.</p>
+                  <p>It simply captures a few beautiful moments from the past year — moments that made us laugh, travel, celebrate, grow, and love each other even more.</p>
+                  <p>Looking through these pages reminds me how lucky I am to walk beside you.</p>
+                  <p>Thank you for making even ordinary days feel extraordinary.</p>
+                  <p>Here's to all the memories we've already created…</p>
+                  <p>…and to countless more waiting to be written.</p>
+                  <p class="italic-line"><em>I love you.</em></p>
+                  <p class="heart-line">❤️</p>
+                </div>
+
+                <div class="ending-footer">
+                  <p>Our Little Book of Memories</p>
+                  <p>Volume I &nbsp;·&nbsp; July 2025 – July 2026</p>
+                  <p style="opacity:0.55; font-size:0.75em; margin-top:0.3em;">Every beautiful year deserves its own volume.</p>
+                  <p style="opacity:0.55; font-size:0.75em;">Volume II begins with our next adventure…</p>
+                  <p class="footer-heart">❤️</p>
+                </div>
+
+                <!-- Secret heart — 5 taps within 5 seconds opens the letter -->
+                <div id="secret-heart" aria-hidden="true" title="">·❤·</div>
+              </div>
+            </div>
+
+          </div><!-- /pages-container -->
+        </div><!-- /book-right-area -->
+
+        <!-- Right page-edge stack -->
+        <div class="book-edge-right" aria-hidden="true"></div>
+
+      </div><!-- /book-open -->
+
+      <!-- Bottom leather binding -->
+      <div class="book-binding-bottom" aria-hidden="true"></div>
+
+    </div><!-- /book-wrapper -->
+
+    <!-- Invisible wide tap zones for edge navigation -->
+    <div id="tap-zone-left"  class="tap-zone" aria-label="Previous page" role="button" tabindex="-1"></div>
+    <div id="tap-zone-right" class="tap-zone" aria-label="Next page"     role="button" tabindex="-1"></div>
+
+    <!-- Navigation arrow buttons -->
+    <button id="nav-prev" class="nav-btn" aria-label="Previous page" style="opacity:0">&#8249;</button>
+    <button id="nav-next" class="nav-btn" aria-label="Next page"     style="opacity:0">&#8250;</button>
+
+    <!-- Page counter -->
+    <div id="page-counter" aria-live="polite" aria-label="Page position"></div>
+
+  </section><!-- /book-scene -->
+
+  <!-- ============================================================
+       GLOW HEART (appears briefly after auto-close)
+       ============================================================ -->
+  <div id="glow-heart" style="display:none" aria-hidden="true">❤️</div>
+
+  <!-- ============================================================
+       MUSIC CONTROLS (always visible)
+       ============================================================ -->
+  <div id="music-controls" aria-label="Music controls" role="group">
+    <button id="music-toggle" aria-label="Toggle music mute" title="Mute">🎵</button>
+    <input
+      type="range"
+      id="volume-slider"
+      min="0" max="100" value="65"
+      aria-label="Volume"
+      title="Volume">
+  </div>
+
+  <!-- ============================================================
+       PORTRAIT ROTATION OVERLAY
+       ============================================================ -->
+  <div id="rotation-overlay" role="dialog" aria-modal="true" aria-label="Landscape mode recommended">
+    <div class="rot-icon" aria-hidden="true">📱</div>
+    <p class="rot-title">This scrapbook is best experienced in Landscape.</p>
+    <p class="rot-sub">Please rotate your phone&ensp;❤️</p>
+    <button id="rot-continue">Continue Anyway</button>
+  </div>
+
+  <!-- ============================================================
+       WELCOME BACK OVERLAY
+       ============================================================ -->
+  <div id="wb-overlay" role="dialog" aria-modal="true" aria-label="Welcome back">
+    <div class="wb-card">
+      <span class="wb-heart" aria-hidden="true">❤️</span>
+      <h2 class="wb-title">Welcome Back</h2>
+      <p class="wb-sub">Would you like to continue reading<br>where you left off?</p>
+      <div class="wb-btns">
+        <button id="wb-continue"  class="wb-btn wb-btn-primary">Continue Reading</button>
+        <button id="wb-restart"   class="wb-btn wb-btn-secondary">Start From Beginning</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       LETTER MODAL (secret easter egg)
+       ============================================================ -->
+  <div id="letter-modal" role="dialog" aria-modal="true" aria-label="Personal letter">
+    <div class="letter-backdrop" aria-hidden="true"></div>
+    <div class="letter-paper">
+      <iframe id="letter-iframe" title="Personal Letter"></iframe>
+      <div class="letter-footer">
+        <button id="close-letter-btn" aria-label="Close letter">Close Letter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS (config → chapters → storage → music → book → app)
+       ============================================================ -->
+  <script src="js/config.js"></script>
+  <script src="js/chapters.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/book.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,301 @@
+/* =============================================================
+   mobile.css — Responsive adjustments for tablets, phones,
+                and landscape preference enforcement
+   ============================================================= */
+
+/* ============================================================
+   LANDSCAPE BREAKPOINTS (primary experience)
+   ============================================================ */
+
+/* Large desktop */
+@media (min-width: 1400px) {
+  .page-body p  { font-size: 1.05rem; }
+  .page-title   { font-size: 1.7rem; }
+  #cover-title  { font-size: 2rem; }
+}
+
+/* ── Tablet landscape (1024px) ── */
+@media (max-width: 1024px) {
+  .page-body p {
+    font-size: clamp(0.78rem, 1.7vw, 0.98rem);
+    line-height: 1.75;
+  }
+
+  .page-title {
+    font-size: clamp(0.95rem, 2.3vw, 1.45rem);
+  }
+
+  #cover-title {
+    font-size: clamp(1rem, 2.6vw, 1.6rem);
+  }
+
+  .nav-btn {
+    width: clamp(32px, 4.5vw, 46px);
+    height: clamp(32px, 4.5vw, 46px);
+  }
+
+  #music-controls {
+    bottom: 10px;
+    right: 12px;
+    padding: 5px 10px 5px 8px;
+  }
+
+  #volume-slider { width: 55px; }
+}
+
+/* ── Small tablet / large phone landscape (768px) ── */
+@media (max-width: 768px) {
+  #book-wrapper {
+    --bw: 96vw;
+  }
+
+  .book-binding-top,
+  .book-binding-bottom {
+    height: clamp(8px, 1.5vh, 12px);
+  }
+
+  .page-title {
+    font-size: clamp(0.85rem, 2.2vw, 1.2rem);
+    margin-bottom: 0.4rem;
+  }
+
+  .page-body p {
+    font-size: clamp(0.72rem, 1.9vw, 0.92rem);
+    line-height: 1.68;
+    margin-bottom: 0.45em;
+  }
+
+  .page-rule { width: 80%; }
+
+  #begin-reading-btn {
+    font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+    padding: 0.5em 1.3em;
+  }
+
+  .ending-footer p {
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+  }
+
+  /* Nav arrows: smaller on small screens */
+  .nav-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1.2rem;
+  }
+
+  #nav-prev { left: 6px; }
+  #nav-next { right: 6px; }
+
+  /* Music controls compact */
+  #music-controls {
+    padding: 4px 8px 4px 7px;
+    gap: 5px;
+  }
+
+  #volume-slider { width: 44px; }
+  #music-toggle  { font-size: 0.85rem; }
+
+  /* Page counter */
+  #page-counter {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    bottom: 10px;
+  }
+}
+
+/* ── Phone landscape (≤ 600px height) ── */
+@media (max-height: 600px) and (orientation: landscape) {
+  #book-wrapper {
+    --bw: min(96vw, calc(88vh * 1.5));
+  }
+
+  .text-page-inner {
+    padding: 1rem 1.5rem;
+  }
+
+  .page-title {
+    font-size: clamp(0.8rem, 2vh, 1.1rem);
+    margin-bottom: 0.3rem;
+  }
+
+  .page-body p {
+    font-size: clamp(0.65rem, 1.6vh, 0.85rem);
+    line-height: 1.55;
+    margin-bottom: 0.35em;
+  }
+
+  .page-rule { margin: 0.4rem auto 0.6rem; }
+
+  .ending-footer {
+    margin-top: 0.6rem;
+    padding-top: 0.4rem;
+  }
+
+  .ending-footer p {
+    font-size: clamp(0.55rem, 1.3vh, 0.7rem);
+    line-height: 1.6;
+  }
+
+  .book-binding-top,
+  .book-binding-bottom { height: 8px; }
+
+  .book-edge-left,
+  .book-edge-right { width: 6px; }
+
+  #music-controls { bottom: 6px; right: 8px; }
+  #page-counter   { bottom: 6px; }
+
+  .nav-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+  }
+}
+
+/* ============================================================
+   COVER SCREEN — responsive
+   ============================================================ */
+
+@media (max-width: 768px) {
+  #cover-front {
+    width: clamp(260px, 78vw, 480px);
+  }
+
+  .cover-top-ornament {
+    font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+    margin-bottom: 0.75rem;
+  }
+
+  #cover-title {
+    font-size: clamp(0.95rem, 3.5vw, 1.5rem);
+  }
+
+  .cover-quote {
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+    margin-bottom: 1rem;
+  }
+
+  #open-story-btn {
+    font-size: clamp(0.7rem, 1.8vw, 0.88rem);
+    padding: 0.55em 1.4em;
+  }
+}
+
+/* Very small phone landscape */
+@media (max-height: 500px) and (max-width: 768px) {
+  #cover-front {
+    width: min(75vw, calc(85vh * 1.5));
+    aspect-ratio: 1.55 / 1;
+  }
+}
+
+/* ============================================================
+   ROTATION OVERLAY
+   ============================================================ */
+
+/* Only shown in portrait on small screens (handled by JS too) */
+@media (orientation: portrait) and (max-width: 900px) {
+  /* The overlay is controlled by JS, but ensure it covers */
+  #rotation-overlay { display: flex; }
+}
+
+@media (orientation: landscape) {
+  #rotation-overlay { display: none !important; }
+}
+
+/* ============================================================
+   TOUCH-FRIENDLY ADJUSTMENTS
+   ============================================================ */
+
+/* Larger tap targets on touch devices */
+@media (hover: none) {
+  .nav-btn {
+    width: clamp(38px, 6vw, 54px);
+    height: clamp(38px, 6vw, 54px);
+  }
+
+  #open-story-btn {
+    padding: 0.75em 2em;
+  }
+
+  #begin-reading-btn {
+    padding: 0.7em 1.8em;
+  }
+
+  /* Larger touch target for secret heart */
+  #secret-heart {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  /* Volume slider */
+  #volume-slider {
+    height: 18px;  /* easier to grab on touch */
+  }
+
+  #volume-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ============================================================
+   PRINT — basic preparation (architecture only)
+   ============================================================ */
+@media print {
+  #loading-screen,
+  #cover-screen,
+  #music-controls,
+  #page-counter,
+  #nav-prev,
+  #nav-next,
+  #rotation-overlay,
+  #wb-overlay,
+  #letter-modal,
+  #glow-heart,
+  .tap-zone { display: none !important; }
+
+  #book-scene {
+    display: block !important;
+    position: static !important;
+    background: white !important;
+  }
+
+  .slot-active {
+    display: block !important;
+    position: static !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .chapter-img {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles (keyboard navigation) */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(200,169,110,0.6);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   SCROLLBAR hiding for book pages (aesthetic)
+   ============================================================ */
+.text-page-inner { scrollbar-width: none; }
+.text-page-inner::-webkit-scrollbar { display: none; }
