@@ -353,7 +353,11 @@ const App = (() => {
 
     tapCount++;
     clearTimeout(tapResetTmr);
-    tapResetTmr = setTimeout(() => { tapCount = 0; }, CONFIG.secretTapWindow);
+    tapResetTmr = setTimeout(() => { 
+      tapCount = 0; 
+      // If they stop tapping before 5, resume the auto-close timer
+      _scheduleAutoClose(); 
+    }, CONFIG.secretTapWindow);
     if (tapCount >= CONFIG.secretTaps) {
       tapCount = 0;
       clearTimeout(tapResetTmr);
