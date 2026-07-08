@@ -347,6 +347,10 @@ const App = (() => {
 
   function _onSecretTap(e) {
     e.stopPropagation && e.stopPropagation();
+    
+    // Once they start tapping the secret heart, don't auto-close the book!
+    _cancelAutoClose();
+
     tapCount++;
     clearTimeout(tapResetTmr);
     tapResetTmr = setTimeout(() => { tapCount = 0; }, CONFIG.secretTapWindow);

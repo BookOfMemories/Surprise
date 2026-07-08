@@ -20,7 +20,7 @@ const CONFIG = {
 
   /* ── Auto-close after Ending page ── */
   autoBookClose      : true,
-  autoBookCloseDelay : 5000,   // ms to wait before starting close
+  autoBookCloseDelay : 30000,  // ms to wait before starting close (increased to 30s)
   musicFadeDuration  : 3200,   // ms for music fade-out
 
   /* ── Feature flags ── */

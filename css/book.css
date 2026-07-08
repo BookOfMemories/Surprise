@@ -298,13 +298,23 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  /* 'safe center' prevents top-cropping when overflowing, falling back to flex-start */
+  justify-content: safe center;
   align-items: center;
-  justify-content: center;
   padding: clamp(1.5rem, 4%, 2.5rem) clamp(1.5rem, 5%, 3.5rem);
   text-align: center;
   overflow-y: auto;
   /* subtle left shadow from the spine */
   box-shadow: inset 6px 0 20px rgba(0,0,0,0.04);
+}
+
+/* Fallback for browsers that don't support safe center:
+   we use auto margins on the first and last flex children */
+.text-page-inner > :first-child {
+  margin-top: auto;
+}
+.text-page-inner > :last-child {
+  margin-bottom: auto;
 }
 
 /* Page title */
