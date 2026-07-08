@@ -441,10 +441,23 @@ const App = (() => {
   function _checkOrientation() {
     const ov = document.getElementById('rotation-overlay');
     if (!ov) return;
+    const isMobile   = () => /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
     const isPortrait = () => window.innerHeight > window.innerWidth && window.innerWidth < 900;
-    const update     = () => { ov.style.display = isPortrait() ? 'flex' : 'none'; };
+    const isLandscape = () => !isPortrait() && isMobile();
+
+    const update = () => {
+      ov.style.display = isPortrait() ? 'flex' : 'none';
+      // Auto-enter fullscreen on landscape rotation (requires being called from
+      // orientationchange which counts as a trusted event on most Android browsers)
+      if (isLandscape() && !(document.fullscreenElement || document.webkitFullscreenElement)) {
+        const doc = document.documentElement;
+        if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {});
+        else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+      }
+    };
+
     window.addEventListener('resize', update);
-    window.addEventListener('orientationchange', () => setTimeout(update, 180));
+    window.addEventListener('orientationchange', () => setTimeout(update, 200));
     update();
   }
 
@@ -478,9 +491,15 @@ const App = (() => {
     _on('volume-slider', 'input', e  => Music.setVolume(e.target.value / 100));
     _on('fullscreen-toggle', 'click', _toggleFullscreen);
 
-    /* Rotation overlay */
+    /* Rotation overlay — also request fullscreen on dismiss */
     _on('rot-continue', 'click', () => {
       document.getElementById('rotation-overlay').style.display = 'none';
+      // This click is a user gesture — perfect moment to enter fullscreen
+      if (!(document.fullscreenElement || document.webkitFullscreenElement)) {
+        const doc = document.documentElement;
+        if (doc.requestFullscreen) doc.requestFullscreen().catch(() => {});
+        else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+      }
     });
 
     /* Letter */
