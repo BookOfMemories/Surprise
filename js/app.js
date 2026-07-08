@@ -534,7 +534,17 @@ const App = (() => {
     }, { passive: false });
 
     scene.addEventListener('touchmove', e => {
-      if (e.touches.length === 2 && lastPinchDist > 0) {
+      if (e.touches.length === 1 && zoom > 1) {
+        // Panning while zoomed
+        const cx = e.touches[0].clientX;
+        const cy = e.touches[0].clientY;
+        panX += (cx - sx);
+        panY += (cy - sy);
+        sx = cx;
+        sy = cy;
+        _applyZoom();
+      } else if (e.touches.length === 2 && lastPinchDist > 0) {
+        // Pinch zoom
         const d   = _pinchDist(e);
         const rat = d / lastPinchDist;
         zoom      = Math.max(1, Math.min(4, zoom * rat));

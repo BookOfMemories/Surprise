@@ -152,6 +152,8 @@ input[type=range] { -webkit-appearance: none; appearance: none; }
   display: none;
   align-items: center;
   justify-content: center;
+  overflow-y: auto; /* Allow scrolling if cover is too tall on landscape mobile */
+  padding: 2rem 0;
   /* Warm wooden table */
   background:
     repeating-linear-gradient(96deg,
@@ -329,7 +331,7 @@ input[type=range] { -webkit-appearance: none; appearance: none; }
 /* Bookmark ribbon */
 #cover-bookmark {
   position: absolute;
-  top: -4px; right: 60px;
+  top: -4px; right: 12%;
   width: 14px;
   height: 70px;
   background: linear-gradient(to bottom, var(--heart-red), #8b1a10);
@@ -347,7 +349,7 @@ input[type=range] { -webkit-appearance: none; appearance: none; }
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: clamp(1.5rem, 4%, 2.5rem) clamp(2rem, 6%, 3.5rem);
+  padding: 6% 8%;
   text-align: center;
 }
 
@@ -505,7 +507,7 @@ input[type=range] { -webkit-appearance: none; appearance: none; }
   position: fixed;
   bottom: 16px;
   right: 18px;
-  z-index: 90;
+  z-index: 200;
   display: flex;
   align-items: center;
   gap: 8px;
