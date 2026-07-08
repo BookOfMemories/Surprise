@@ -11,19 +11,6 @@
 
   <title>Our Little Book of Memories · Volume I</title>
 
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Apple PWA meta tags (iPhone/iPad standalone support) -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Book of Memories">
-  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-
-  <!-- Microsoft Tile -->
-  <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
-  <meta name="msapplication-TileColor" content="#2b1508">
-
   <!-- CSS (order matters) -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/animations.css">
@@ -319,15 +306,6 @@
   <script src="js/music.js"></script>
   <script src="js/book.js"></script>
   <script src="js/app.js"></script>
-  <!-- Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .catch(() => {}); // Fail silently — app still works without SW
-      });
-    }
-  </script>
 
 </body>
 </html>
